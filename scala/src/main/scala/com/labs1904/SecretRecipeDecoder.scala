@@ -3,7 +3,6 @@ package com.labs1904
 import java.io.PrintWriter
 import scala.collection.immutable.HashMap
 import scala.io.Source
-import scala.reflect.io.File
 
 /**
  * An ingredient has an amount and a description.
@@ -66,7 +65,7 @@ object SecretRecipeDecoder {
         decodedString += decodedLetter.get
       }
       else {
-        decodedString += " "
+        decodedString += c
       })
     decodedString
   }
@@ -89,13 +88,14 @@ object SecretRecipeDecoder {
    * @param args
    */
   def main(args: Array[String]): Unit = {
+    val pw = new PrintWriter("decoded_recipe.txt")
     val filename = "src/main/resources/secret_recipe.txt"
-    val pw = new PrintWriter(new File("decoded_recipe.txt"))
-
     for (line <- Source.fromFile(filename).getLines) {
       val ingredient = decodeIngredient(line)
-      pw.write(s"${ingredient.amount} ${ingredient.description}")
+      pw.write(s"${ingredient.amount} ${ingredient.description} \n")
     }
+    Source.fromFile(filename).close()
     pw.close
+
   }
 }
